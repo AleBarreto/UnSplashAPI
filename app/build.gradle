@@ -6,6 +6,12 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+static def getApiKey() {
+    Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props['API_KEY_UNSPLASH']
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -18,6 +24,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_KEY_UNSPLASH", "\"" + getApiKey() + "\""
+
     }
 
     buildTypes {
@@ -50,7 +59,7 @@ dependencies {
 
     // Dagger Hilt
     def hiltVersion = "2.28-alpha"
-    def hiltAndroidXVersion = "1.0.0-beta01"
+    def hiltAndroidXVersion = "1.0.0-alpha03"
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltAndroidXVersion"
