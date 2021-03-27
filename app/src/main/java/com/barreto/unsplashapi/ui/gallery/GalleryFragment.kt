@@ -38,7 +38,10 @@ class GalleryFragment : Fragment() {
 
         binding.apply {
             rvList.setHasFixedSize(true)
-            rvList.adapter = adapter
+            rvList.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = AdapterGalleryLoadState { adapter.retry() },
+                footer = AdapterGalleryLoadState { adapter.retry() }
+            )
         }
 
         viewModel.photos.observe(viewLifecycleOwner) {
