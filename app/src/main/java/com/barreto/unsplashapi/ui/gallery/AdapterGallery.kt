@@ -11,9 +11,14 @@ import com.barreto.unsplashapi.model.UnSplashPhoto
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
-class AdapterGallery : PagingDataAdapter<UnSplashPhoto, AdapterGallery.MyViewHolder>(
-    PHOTO_COMPARATOR
-) {
+class AdapterGallery(private val listener: OnItemClickListener) :
+    PagingDataAdapter<UnSplashPhoto, AdapterGallery.MyViewHolder>(
+        PHOTO_COMPARATOR
+    ) {
+
+    interface OnItemClickListener {
+        fun onItemClick(photo: UnSplashPhoto)
+    }
 
     companion object {
         private val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<UnSplashPhoto>() {
@@ -40,8 +45,20 @@ class AdapterGallery : PagingDataAdapter<UnSplashPhoto, AdapterGallery.MyViewHol
     }
 
 
-    class MyViewHolder(private val binding: ItemListBinding) :
+    inner class MyViewHolder(private val binding: ItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = getItem(position)
+                    if (item != null) {
+                        listener.onItemClick(item)
+                    }
+                }
+            }
+        }
 
         fun bind(model: UnSplashPhoto) {
             binding.apply {

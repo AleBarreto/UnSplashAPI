@@ -1,7 +1,9 @@
 package com.barreto.unsplashapi.model
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class CurrentUserCollections (
 
 	@SerializedName("id") val id : Int,
@@ -11,4 +13,4 @@ data class CurrentUserCollections (
 	@SerializedName("updated_at") val updated_at : String,
 	@SerializedName("cover_photo") val cover_photo : String,
 	@SerializedName("user") val user : String
-)
+) : Parcelable
